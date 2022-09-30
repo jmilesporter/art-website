@@ -1,19 +1,20 @@
 <script context="module">
 	export async function load({ fetch }) {
-		const response = await fetch('https://jsonplaceholder.typicode.com/photos');
-		const guides = await response.json();
+		const res = await fetch('https://jsonplaceholder.typicode.com/photos');
+		const guides = await res.json();
 
-		if (response.ok) {
+		if (res.ok) {
 			return {
 				props: {
 					guides
 				}
 			};
+		} else {
+			return {
+				status: res.status(),
+				error: new Error('Could not fetch the guides')
+			};
 		}
-		return {
-			status: response.status,
-			error: new Error('Could not fetch the guides')
-		};
 	}
 </script>
 

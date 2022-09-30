@@ -1,20 +1,21 @@
 <script context="module">
 	export async function load({ fetch, params }) {
 		const id = params.id;
-		const response = await fetch(`https://jsonplaceholder.typicode.com/photos/${id}`);
-		const guide = await response.json();
+		const res = await fetch(`https://jsonplaceholder.typicode.com/photos/${id}`);
+		const guide = await res.json();
 
-		if (response.ok) {
+		if (res.ok) {
 			return {
 				props: {
 					guide
 				}
 			};
+		} else {
+			return {
+				status: res.status(),
+				error: new Error('Could not fetch the guide')
+			};
 		}
-		return {
-			status: response.status(),
-			error: new Error('Could not load guide')
-		};
 	}
 </script>
 
@@ -24,7 +25,7 @@
 
 <div class="guide">
 	<h2>{guide.title}</h2>
-	<img src={guide.url} alt="image ${guide.id}" />
+	<img src={guide.url} alt="image {guide.id}" />
 </div>
 
 <style>
